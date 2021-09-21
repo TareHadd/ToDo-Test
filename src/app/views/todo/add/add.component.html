@@ -1,0 +1,23 @@
+<div class="p-4 bg-light shadow">
+    <form [formGroup]="taskForm" (submit)="submit()">
+        <div class="mb-3">
+            <label class="form-label">Novi task</label>
+            <input 
+            type="text" 
+            class="form-control"
+            formControlName="name"
+            >
+        </div>
+    
+        <div class="mb-3">
+            <label class="form-label">Datum završetka</label>
+            <input
+             type="datetime-local" 
+             class="form-control"
+             formControlName="date"
+             >
+        </div>
+    
+        <button class="btn btn-primary" type="submit">Dodaj</button>
+    </form>
+</div>
