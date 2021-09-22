@@ -1,5 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { TodoService } from 'src/app/core/services/todo.service';
 
 @Component({
   selector: 'app-add',
@@ -9,29 +11,89 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class AddComponent implements OnInit {
 
   taskForm!: FormGroup;
+  expiring:boolean = false
+  data!: any
+
+  todayDate!:any
+  inputDate!: any
+
+  submitted = false;
+  dateOld = '';
 
   @Output() formData = new EventEmitter<Task>()
  
-  constructor() { 
+  constructor(private service: TodoService) { 
 
     this.taskForm = new FormGroup({
       name: new FormControl('', Validators.required),
       date: new FormControl('', Validators.required),
-      status: new FormControl(false)
+      status: new FormControl(false),
+      expiring: new FormControl(true)
     })
   }
 
 
   ngOnInit(): void {
+    this.todayDate = this.service.formatDate(new Date, "MM/dd/yyyy")
   }
 
   controls(){
     return this.taskForm.controls
   }
 
-  submit(){
-    console.log(this.taskForm.value)
-    this.formData.emit(this.taskForm.value)
+  get formControls(){
+    return this.taskForm.controls
   }
+
+  submit(){
+
+    this.submitted = true;
+  
+    if(this.formControls.name.value === ''){
+      return
+    }
+
+    this.inputDate = this.service.formatDate(new Date(this.controls().date.value), "MM/dd/yyyy")
+    
+    /* Logic for date, if input is today that means there is less than 24hours left to finsih task,
+     and automatically its expiring.*/
+
+    if( this.todayDate <= this.inputDate ){
+      if( this.todayDate === this.inputDate ){
+        this.expiring = true
+      }else
+      {
+        this.expiring = false
+      }
+      this.formValue(
+        this.controls().name.value, 
+        this.controls().date.value, 
+        this.controls().status.value, 
+        this.expiring
+        )
+      
+      this.formData.emit(this.data)
+      this.submitted = false;
+      
+    }else{
+      this.dateOld = 'Datum ne moze biti star!'
+    }
+
+    this.taskForm.reset()
+  }
+
+
+
+  // This will be useful for expiring value, thats why we write form value again
+  formValue(name:string,date:Date,status:boolean,expiring:boolean){
+    this.data = {
+      name: name,
+      date: date,
+      status: status,
+      expiring: expiring
+    }
+    return this.data;
+  }
+
 
 }

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter  } from '@angular/core';
 import { Task } from 'src/app/core/models/task';
+import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-list',
@@ -13,8 +14,11 @@ export class ListComponent implements OnInit {
   @Output() deleteTask = new EventEmitter<any>()
 
   finished!: boolean;
+  show = true;
 
-  constructor() { }
+  id!:any;
+
+  constructor(config: NgbModalConfig, private modalService: NgbModal) { }
 
   ngOnInit(): void {
   }
@@ -30,9 +34,28 @@ export class ListComponent implements OnInit {
     this.finishedOrNot.emit(newData)
   }
 
-  delete(data:Task){
-    this.deleteTask.emit(data.id)
+  delete(data:Task, content: any){
+    if(!data.status){
+      this.open(content)
+      this.id = data.id
+    }else{
+      this.deleteTask.emit(data.id)
+    }
+    
   }
 
+  deleteFromModal(){
+    this.deleteTask.emit(this.id)
+    this.modalService.dismissAll('Cross click')
+  }
+
+
+  shown(){
+    this.show = false;
+  }
+
+  open(content: any) {
+    this.modalService.open(content,  { centered: true });
+  }
 
 }

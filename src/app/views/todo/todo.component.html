@@ -1,20 +1,25 @@
-<main class="container bg-light rounded shadow ">
+<main class="container-lg d-flex justify-content-center p-0">
 
-    <div class="row p-4 w-100 h-100 ">
-        <div class="col-8 ">
-            <h4 class="mb-3">Lista taskova</h4>
+    <div class="row p-0 p-md-4 w-100 h-100">
+
+        <div class="col-12 col-lg-4 trans hide">
+            <h4 class="mb-3 text-light">DODAJ NOVI TASK</h4>
+            <app-add
+            (formData) = "taskAdd($event)"
+            ></app-add>
+            
+        </div>
+
+        <div 
+        class="col-12 col-lg-8 mt-lg-0 mt-3">
+        <h4 class="mb-3 text-light">LISTA TASKOVA</h4>
             <app-list
             [tasks]="tasks"
             (finishedOrNot)="taskFinished($event)"
             (deleteTask) = "deleteTask($event)"
             ></app-list>
         </div>
-        <div class="col-4">
-            <h4 class="mb-3">Dodaj novi task</h4>
-            <app-add
-            (formData) = "taskAdd($event)"
-            ></app-add>
-        </div>
+        
     </div>
 
 </main>

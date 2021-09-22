@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { dashCaseToCamelCase } from '@angular/compiler/src/util';
+import { Component, OnInit, OnDestroy, DoCheck } from '@angular/core';
 import { Task } from 'src/app/core/models/task';
 import { TodoService } from 'src/app/core/services/todo.service';
 
@@ -7,18 +8,29 @@ import { TodoService } from 'src/app/core/services/todo.service';
   templateUrl: './todo.component.html',
   styleUrls: ['./todo.component.scss']
 })
-export class TodoComponent implements OnInit {
+export class TodoComponent implements OnInit, OnDestroy, DoCheck{
 
   tasks: Task[] = []
-  
+  todayDate!:any
+  showForm = true;
 
-  constructor(private service: TodoService) { }
+
+  constructor(private service: TodoService) {
+   }
 
   ngOnInit(): void {
+    this.todayDate = this.service.formatDate(new Date, "MM/dd/yyyy")
     this.listTasks()
   }
 
- 
+
+  ngOnDestroy(){}
+
+  ngDoCheck(){
+
+  }
+
+
   listTasks(){
     this.service.listTasks().subscribe(
       responseData =>{
@@ -31,6 +43,7 @@ export class TodoComponent implements OnInit {
     this.service.addTask(data).subscribe(
       resData => {
         this.listTasks()
+        console.log(data)
       }
     )
   }
@@ -51,5 +64,17 @@ export class TodoComponent implements OnInit {
       }
     )
   }
+
+
+  // checkingTaskDate(tasks: Task[]){
+  //   for(let task of tasks){
+  //     this.service.checkingTodoDate(task.id, task.date, this.todayDate, task)
+  //   }
+  // }
+
+  showAddForm(){
+    this.showForm = !this.showForm
+  }
+  
 
 }

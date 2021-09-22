@@ -1,21 +1,36 @@
-<div class="p-4 bg-light shadow">
-    <form [formGroup]="taskForm" (submit)="submit()">
+<div class="p-2 p-sm-4 bg-light shadow rounded">
+    <form [formGroup]="taskForm" (submit)="submit()" class="needs-validation">
         <div class="mb-3">
             <label class="form-label">Novi task</label>
             <input 
             type="text" 
             class="form-control"
             formControlName="name"
+            [ngClass]="{
+                    'is-invalid': submitted && formControls.name.errors
+            }"
             >
+            <div class="invalid-feedback">
+                Polje ne može biti prazno.
+            </div>
         </div>
     
         <div class="mb-3">
             <label class="form-label">Datum završetka</label>
             <input
-             type="datetime-local" 
+             type="date" 
              class="form-control"
              formControlName="date"
+             [ngClass]="{
+                'is-invalid': submitted && formControls.date.errors
+             }"
              >
+             <div class="invalid-feedback">
+                 Polje ne može biti prazno.
+             </div>
+        </div>
+        <div class="mb-3 text-danger">
+            {{ dateOld }}
         </div>
     
         <button class="btn btn-primary" type="submit">Dodaj</button>

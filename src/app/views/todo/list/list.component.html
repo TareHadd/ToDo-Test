@@ -1,4 +1,11 @@
-<table class="table">
+<div class="bg-light p-2 p-sm-4 shadow rounded">
+
+  <div *ngIf="show" class="d-flex justiy-content-between">
+    <p class="m-0">UKOLIKO ZELITE DA OZNACITE TASK ZAVRŠENIM, DOVOLJNO JE DA KLIKNETE NA DIO GDJE PIŠE IME LI DATUM</p>
+    <button class="btn btn-sm btn-dark m-2" (click)="shown()">OK</button>
+  </div>
+
+  <table class="table desktop">
     <thead>
       <tr>
         <th>Status</th>
@@ -8,20 +15,91 @@
       </tr>
     </thead>
     <tbody  *ngFor="let task of tasks">
-      <tr  class="pointer">
-        <td class="text-success" *ngIf="task.status">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
-            <path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z"/>
-          </svg>
-        </td>
-        <td class="text-warning" *ngIf="!task.status">
+      <tr  
+      class="pointer"
+      [ngClass]="{
+        'bg-blink': task.expiring
+       }"
+      >
+      <td class="text-success" style="width: 20px;" *ngIf="task.status">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+          <path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z"/>
+        </svg>
+      </td>
+
+      <td class="text-warning" style="width: 20px;"  *ngIf="!task.status">
+          <div style="margin-bottom: 3px;"></div>
           <app-blink></app-blink>
-        </td>
-        <td (click)="finishedTask(task)">{{ task.name }}</td>
-        <td (click)="finishedTask(task)">{{ task.date }}</td>
-        <td >
-          <button class="btn btn-sm btn-danger" (click)="delete(task)">Obriši</button>
-        </td>
+      </td>
+
+      <td (click)="finishedTask(task)">{{ task.name }}</td>
+      <td style="width: 120px;" (click)="finishedTask(task)">{{ task.date }}</td>
+      <td style="width: 31px;">
+        <button class="btn btn-sm btn-danger" (click)="delete(task, content)">Obriši</button>
+      </td>
       </tr>
     </tbody>
   </table>
+
+ <div 
+ class="mobile d-none rounded"
+ *ngFor="let task of tasks" style="cursor: pointer;"
+ >
+  <div 
+  class="d-flex flex-column my-1 p-1" 
+   [ngClass]="{
+    'bg-blink': task.expiring
+   }"
+  >
+    <div class="d-flex justify-content-between align-items-center">
+      <p 
+      (click)="finishedTask(task)" 
+      class="m-0">{{ task.name }}</p>
+
+      <div (click)="delete(task, content)" style="cursor: pointer;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-trash-fill"
+          viewBox="0 0 16 16">
+          <path
+            d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
+        </svg>
+      </div>
+
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center">
+      <p 
+      (click)="finishedTask(task)" 
+      class="m-0">{{ task.date }}
+    </p>
+     
+      <div class="text-success" *ngIf="task.status">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+          <path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z"/>
+        </svg>
+      </div >
+
+      <div class="m-1" *ngIf="!task.status">
+        <app-blink></app-blink>
+      </div>
+    </div>
+
+  </div>
+ </div>
+</div>
+
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Upozorenje!</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body d-flex flex-column justify-content-center">
+    <p>Da li ste sigurni da zelite obrisati task?</p>
+    <div class="d-flex justify-content-center">
+      <button class="btn  btn-danger mx-1" (click) ="deleteFromModal()">DA</button>
+      <button class="btn btn-success mx-1" (click)="d('Cross click')">NE</button>
+    </div>
+  </div>
+</ng-template>
