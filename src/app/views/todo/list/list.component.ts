@@ -23,6 +23,7 @@ export class ListComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  // Changing data that will be emmited
   finishedTask(data: Task){
     this.finished = data.status
     const newData = {
@@ -34,6 +35,7 @@ export class ListComponent implements OnInit {
     this.finishedOrNot.emit(newData)
   }
 
+  // Delete task used in finshed tasks, but if task is still unfinshed it will open modal
   delete(data:Task, content: any){
     if(!data.status){
       this.open(content)
@@ -44,6 +46,7 @@ export class ListComponent implements OnInit {
     
   }
 
+  // This will delete task if you choose yes in modal
   deleteFromModal(){
     this.deleteTask.emit(this.id)
     this.modalService.dismissAll('Cross click')

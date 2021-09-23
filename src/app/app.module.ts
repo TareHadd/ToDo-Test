@@ -12,6 +12,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { ListComponent } from './views/todo/list/list.component';
 import { BlinkComponent } from './shared/blink/blink.component';
+import { LoadingComponent } from './shared/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { BlinkComponent } from './shared/blink/blink.component';
     NavbarComponent,
     FooterComponent,
     ListComponent,
-    BlinkComponent
+    BlinkComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,

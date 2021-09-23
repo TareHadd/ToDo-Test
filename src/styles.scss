@@ -2,3 +2,7 @@
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
+
+.bg-custom{
+    background: url('https://www.blogenium.com/wp-content/uploads/2019/08/blogenium-nature-wallpapers-16.jpg')center center/cover !important ;
+}

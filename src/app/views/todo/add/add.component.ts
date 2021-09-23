@@ -20,6 +20,9 @@ export class AddComponent implements OnInit {
   submitted = false;
   dateOld = '';
 
+  name!:string
+  nameError = ''
+
   @Output() formData = new EventEmitter<Task>()
  
   constructor(private service: TodoService) { 
@@ -37,6 +40,7 @@ export class AddComponent implements OnInit {
     this.todayDate = this.service.formatDate(new Date, "MM/dd/yyyy")
   }
 
+
   controls(){
     return this.taskForm.controls
   }
@@ -45,12 +49,23 @@ export class AddComponent implements OnInit {
     return this.taskForm.controls
   }
 
+
+  
   submit(){
 
+    // Validation before sending/emmiting data 
     this.submitted = true;
   
     if(this.formControls.name.value === ''){
       return
+    }
+
+    if(this.formControls.name.value){
+      this.name = this.formControls.name.value
+      if(this.name.length > 30 ){
+        this.nameError = 'Naziv vašeg taska je predug, maksimum je 30 slova.'
+        return
+      }
     }
 
     this.inputDate = this.service.formatDate(new Date(this.controls().date.value), "MM/dd/yyyy")

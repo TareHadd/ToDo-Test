@@ -1,5 +1,4 @@
-import { dashCaseToCamelCase } from '@angular/compiler/src/util';
-import { Component, OnInit, OnDestroy, DoCheck } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { Task } from 'src/app/core/models/task';
 import { TodoService } from 'src/app/core/services/todo.service';
 
@@ -8,11 +7,13 @@ import { TodoService } from 'src/app/core/services/todo.service';
   templateUrl: './todo.component.html',
   styleUrls: ['./todo.component.scss']
 })
-export class TodoComponent implements OnInit, OnDestroy, DoCheck{
+export class TodoComponent implements OnInit, OnDestroy{
 
   tasks: Task[] = []
   todayDate!:any
   showForm = true;
+
+  fetching = false;
 
 
   constructor(private service: TodoService) {
@@ -24,17 +25,15 @@ export class TodoComponent implements OnInit, OnDestroy, DoCheck{
   }
 
 
-  ngOnDestroy(){}
-
-  ngDoCheck(){
-
-  }
-
+  //  Theese methods are responsible for doing acttion, 
+  //  they get data from components and use service for doing action
 
   listTasks(){
+    this.fetching = true
     this.service.listTasks().subscribe(
       responseData =>{
         this.tasks = responseData
+        this.fetching = false
       }
     )
   }
@@ -66,11 +65,8 @@ export class TodoComponent implements OnInit, OnDestroy, DoCheck{
   }
 
 
-  // checkingTaskDate(tasks: Task[]){
-  //   for(let task of tasks){
-  //     this.service.checkingTodoDate(task.id, task.date, this.todayDate, task)
-  //   }
-  // }
+  ngOnDestroy(){}
+
 
   showAddForm(){
     this.showForm = !this.showForm

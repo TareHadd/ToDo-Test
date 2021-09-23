@@ -1,9 +1,9 @@
-<main class="container-lg d-flex justify-content-center p-0">
+<main class="container-lg d-flex justify-content-center p-0 pb-5">
 
     <div class="row p-0 p-md-4 w-100 h-100">
 
-        <div class="col-12 col-lg-4 trans hide">
-            <h4 class="mb-3 text-light">DODAJ NOVI TASK</h4>
+        <div class="col-12 col-xl-4 trans hide">
+            <h4 class="mb-3 text-dark">DODAJ NOVI TASK</h4>
             <app-add
             (formData) = "taskAdd($event)"
             ></app-add>
@@ -11,13 +11,19 @@
         </div>
 
         <div 
-        class="col-12 col-lg-8 mt-lg-0 mt-3">
-        <h4 class="mb-3 text-light">LISTA TASKOVA</h4>
+        class="col-12 col-xl-8 mt-lg-0 mt-3">
+        <h4 class="mb-3 text-dark">LISTA TASKOVA</h4>
             <app-list
             [tasks]="tasks"
             (finishedOrNot)="taskFinished($event)"
             (deleteTask) = "deleteTask($event)"
-            ></app-list>
+            >
+        </app-list>
+        
+        <div *ngIf="fetching" class="d-flex justify-content-center mt-5">
+            <app-loading></app-loading>
+        </div>
+
         </div>
         
     </div>
