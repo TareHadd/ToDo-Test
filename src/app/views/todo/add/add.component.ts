@@ -55,6 +55,11 @@ export class AddComponent implements OnInit {
 
     // Validation before sending/emmiting data 
     this.submitted = true;
+
+    if(!this.formControls.date.value){
+      this.dateOld = ''
+      return
+    }
   
     if(this.formControls.name.value === ''){
       return
@@ -93,7 +98,7 @@ export class AddComponent implements OnInit {
       this.nameError = ''
       
     }else{
-      this.dateOld = 'Datum ne moze biti star!'
+      this.dateOld = 'Datum ne moze biti iz prošlosti!'
     }
 
     this.taskForm.reset()
