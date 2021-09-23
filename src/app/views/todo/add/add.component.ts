@@ -70,8 +70,9 @@ export class AddComponent implements OnInit {
 
     this.inputDate = this.service.formatDate(new Date(this.controls().date.value), "MM/dd/yyyy")
     
-    /* Logic for date, if input is today that means there is less than 24hours left to finsih task,
-     and automatically its expiring.*/
+    /* Logic for date, if input is today,
+     that means there is less than 24hours left
+    to finsih task, and automatically its expiring.*/
 
     if( this.todayDate <= this.inputDate ){
       if( this.todayDate === this.inputDate ){

@@ -25,8 +25,10 @@ export class TodoComponent implements OnInit, OnDestroy{
   }
 
 
-  //  Theese methods are responsible for doing acttion, 
-  //  they get data from components and use service for doing action
+  /*
+    These methods are responsible for doing action, 
+    they get data from components and use service for doing action.
+  */
 
   listTasks(){
     this.fetching = true

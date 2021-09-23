@@ -16,6 +16,12 @@ export class TodoService {
   listTasks() {
     return this.http.get<{ [key: string]: Task }>(this.api).pipe(
       map((responseData) => {
+
+        /*
+        We do this because firebase generate unique key for every record,
+         And then we assign that key to id so we make our job easier.
+        */
+
         const dataArray: Task[] = [];
         for (const key in responseData) {
           if (responseData.hasOwnProperty(key)) {
@@ -23,6 +29,10 @@ export class TodoService {
           }
         }
 
+        /* To check date of task, we loop trough every task every time the app loads,
+        then the condition checks if date is equal to today's date, if is,
+        there is less than 24h left, so we assign true to expired.
+        */  
        
         for( let data of dataArray) {
         
@@ -61,28 +71,4 @@ export class TodoService {
     return datePipe.transform(date, format)
   }
 
-  // checkingTodoDate(id:any, inputDate:any, todayDate:any, singleTask: Task){
-    
-  //   inputDate = this.formatDate(new Date(inputDate), "MM/dd/yyyy")
-  //   todayDate = this.formatDate(new Date, "MM/dd/yyyy")
-
-  //   if( todayDate === inputDate ){
-      
-  //     const expired = true;
-  //     const newData: any = {
-  //       name: singleTask.name,
-  //       date: singleTask.date,
-  //       status: singleTask.status,
-  //       expiring: expired
-  //     }
-
-  //     this.http.put( `https://todo-c85a1-default-rtdb.firebaseio.com/todo/${id}.json`, newData).subscribe()
-  //     console.log('rjeseno')
-
-  //   }
-
-  //   console.log('pregledano')
-
-
-  // }
 }
