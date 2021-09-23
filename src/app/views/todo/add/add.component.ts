@@ -90,6 +90,7 @@ export class AddComponent implements OnInit {
       
       this.formData.emit(this.data)
       this.submitted = false;
+      this.nameError = ''
       
     }else{
       this.dateOld = 'Datum ne moze biti star!'
